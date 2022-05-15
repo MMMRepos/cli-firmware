@@ -21,26 +21,64 @@
     SOFTWARE.
 */
 
-#include "mcc_generated_files/mcc.h"
-/*
-    Main application
-*/
-int main(void)
-{
-    /* Initializes MCU, drivers and middleware */
-    SYSTEM_Initialize();
+#include <stdint.h>
+#include <string.h>
+#include "mcc_generated_files/drivers/uart.h"
 
-    /* Replace with your application code */
-    while (1)
+#define MAX_COMMAND_SIZE    (100U)
+
+static const char hello[] = "Received Hello";
+static const char goodBye[] = "Received Good Bye";
+static const char holdPlease[] = "Received Hold Please";
+
+struct cmd
+{
+    const char * const command;
+    void (* const handler)(char *argument);
+};
+
+const struct cmd commands[] =
+{
+    {"Hello, it is nice to meet you.",                 helloCmd},
+    {"I need to run; but it has been great talking.",  goodByeCmd},
+    {"Excuse me a moment, someone else is here.",      holdPleaseCmd}
+};
+
+static void helloCmd(char *pArg)
+{
+    (void)pArg;
+    uint8_t length = strlen(hello);
+    uint8_t i = 0;
+    
+    for(i = 0; i < length; i++)
     {
-        
-    uart[CLI].Write('t');
-    uart[CLI].Write('e');
-    uart[CLI].Write('s');
-    uart[CLI].Write('t');
-    uart[CLI].Write('\n');
+        uart[CLI].Write(hello[i]);
     }
+    uart[CLI].Write('\n');
 }
-/**
-    End of File
-*/
+
+static void goodByeCmd(char *pArg)
+{
+    (void)pArg;
+    uint8_t length = strlen(goodBye);
+    uint8_t i = 0;
+    
+    for(i = 0; i < length; i++)
+    {
+        uart[CLI].Write(goodBye[i]);
+    }
+    uart[CLI].Write('\n');
+}
+
+static void holdPleaseCmd(char *pArg)
+{
+    (void)pArg;
+    uint8_t length = strlen(holdPlease);
+    uint8_t i = 0;
+    
+    for(i = 0; i < length; i++)
+    {
+        uart[CLI].Write(holdPlease[i]);
+    }
+    uart[CLI].Write('\n');
+}
