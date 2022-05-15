@@ -34,10 +34,10 @@ static const char goodBye[] = "Received Good Bye";
 static const char holdPlease[] = "Received Hold Please";  
 static uint8_t index = 0;
 
-
 static void sendHelloCmdResponse(char *pArg);
 static void sendGoodByeCmdResponse(char *pArg);
 static void sendHoldPleaseCmdResponse(char *pArg);
+static void processCommand(char *commandText);
 
 struct cmd
 {
@@ -91,6 +91,29 @@ static void sendHoldPleaseCmdResponse(char *pArg)
     uart[CLI].Write('\n');
 }
 
+static void processCommand(char *commandText)
+{   
+    uint8_t comparison;
+    uint8_t commandTextLength;
+    uint8_t storedCommandLength;
+    uint8_t cmdIndex = 0;
+    
+    for (cmdIndex = 0; cmdIndex < sizeof(commands)/sizeof(*commands); cmdIndex++)
+    {
+        comparison = strcmp(commandText, commands[cmdIndex].command);
+        commandTextLength = strlen(commandText);        
+        storedCommandLength = strlen(commands[cmdIndex].command);
+
+        if (comparison == 0 && commandTextLength == storedCommandLength)
+        {
+            if (commands[cmdIndex].handler != NULL)
+            {
+                commands[cmdIndex].handler(commandText);
+                return;
+            }
+        }
+    }
+}
 
 void cliHandler(void)
 {
@@ -105,7 +128,7 @@ void cliHandler(void)
             if((c == '\r') || (c == '\n'))
             {
                 command[index] = 0;
-                // Route the command to the correct handler here
+                processCommand((char*)command);
                 index = 0;
             }
         }
