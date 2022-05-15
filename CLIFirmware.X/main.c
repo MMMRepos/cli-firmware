@@ -22,6 +22,7 @@
 */
 
 #include "mcc_generated_files/mcc.h"
+#include "cli.h"
 /*
     Main application
 */
@@ -33,12 +34,12 @@ int main(void)
     /* Replace with your application code */
     while (1)
     {
-        
-    uart[CLI].Write('t');
-    uart[CLI].Write('e');
-    uart[CLI].Write('s');
-    uart[CLI].Write('t');
-    uart[CLI].Write('\n');
+//        uart[CLI].Write('t');
+//        uart[CLI].Write('e');
+//        uart[CLI].Write('s');
+//        uart[CLI].Write('t');
+//        uart[CLI].Write('\n');
+        cliHandler();
     }
 }
 /**
