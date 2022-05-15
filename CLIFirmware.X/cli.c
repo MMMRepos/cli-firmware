@@ -35,9 +35,9 @@ static const char holdPlease[] = "Received Hold Please";
 static uint8_t index = 0;
 
 
-static void helloCmd(char *pArg);
-static void goodByeCmd(char *pArg);
-static void holdPleaseCmd(char *pArg);
+static void sendHelloCmdResponse(char *pArg);
+static void sendGoodByeCmdResponse(char *pArg);
+static void sendHoldPleaseCmdResponse(char *pArg);
 
 struct cmd
 {
@@ -47,12 +47,12 @@ struct cmd
 
 const struct cmd commands[] =
 {
-    {"Hello, it is nice to meet you.",                 helloCmd},
-    {"I need to run; but it has been great talking.",  goodByeCmd},
-    {"Excuse me a moment, someone else is here.",      holdPleaseCmd}
+    {"Hello, it is nice to meet you.",                 sendHelloCmdResponse},
+    {"I need to run; but it has been great talking.",  sendGoodByeCmdResponse},
+    {"Excuse me a moment, someone else is here.",      sendHoldPleaseCmdResponse}
 };
 
-static void helloCmd(char *pArg)
+static void sendHelloCmdResponse(char *pArg)
 {
     (void)pArg;
     uint8_t length = strlen(hello);
@@ -65,7 +65,7 @@ static void helloCmd(char *pArg)
     uart[CLI].Write('\n');
 }
 
-static void goodByeCmd(char *pArg)
+static void sendGoodByeCmdResponse(char *pArg)
 {
     (void)pArg;
     uint8_t length = strlen(goodBye);
@@ -78,7 +78,7 @@ static void goodByeCmd(char *pArg)
     uart[CLI].Write('\n');
 }
 
-static void holdPleaseCmd(char *pArg)
+static void sendHoldPleaseCmdResponse(char *pArg)
 {
     (void)pArg;
     uint8_t length = strlen(holdPlease);
