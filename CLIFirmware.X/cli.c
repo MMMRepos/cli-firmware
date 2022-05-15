@@ -28,9 +28,16 @@
 #define MAX_COMMAND_SIZE    (100U)
 
 static bool isCommandReceived = false;
+static char command[MAX_COMMAND_SIZE];  
 static const char hello[] = "Received Hello";
 static const char goodBye[] = "Received Good Bye";
-static const char holdPlease[] = "Received Hold Please";
+static const char holdPlease[] = "Received Hold Please";  
+static uint8_t index = 0;
+
+
+static void helloCmd(char *pArg);
+static void goodByeCmd(char *pArg);
+static void holdPleaseCmd(char *pArg);
 
 struct cmd
 {
@@ -84,6 +91,7 @@ static void holdPleaseCmd(char *pArg)
     uart[CLI].Write('\n');
 }
 
+
 void cliHandler(void)
 {
     char c = 0;
@@ -94,10 +102,20 @@ void cliHandler(void)
         if((c == '\r') || (c == '\n'))
         {
             // process the command
+            if((c == '\r') || (c == '\n'))
+            {
+                command[index] = 0;
+                // Route the command to the correct handler here
+                index = 0;
+            }
         }
         else
         {
             // store the characters in a command in the comand buffer
+            if(index < MAX_COMMAND_SIZE)
+            {
+               command[index++] = c;
+            }
         }
     }
 }
