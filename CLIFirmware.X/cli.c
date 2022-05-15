@@ -27,6 +27,7 @@
 
 #define MAX_COMMAND_SIZE    (100U)
 
+static bool isCommandReceived = false;
 static const char hello[] = "Received Hello";
 static const char goodBye[] = "Received Good Bye";
 static const char holdPlease[] = "Received Hold Please";
@@ -81,4 +82,22 @@ static void holdPleaseCmd(char *pArg)
         uart[CLI].Write(holdPlease[i]);
     }
     uart[CLI].Write('\n');
+}
+
+void cliHandler(void)
+{
+    char c = 0;
+
+    while(uart[CLI].DataReady() && !isCommandReceived)
+    {
+        c = uart[CLI].Read();
+        if((c == '\r') || (c == '\n'))
+        {
+            // process the command
+        }
+        else
+        {
+            // store the characters in a command in the comand buffer
+        }
+    }
 }
