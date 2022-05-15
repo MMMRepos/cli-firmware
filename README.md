@@ -15,5 +15,5 @@ Following applications are required to make modifications to the existing firmwa
 
 ## Firmware Functionality
 + The cli.c and cli.h file are responsible for handling the command reception, processing and sending a response to the received command. These files form the core of the CLI firmware.
-+ The firmware was tested using [CLI Application](INSERT THE LINK TO THE REPOSITORY), a headless CLI application written in Python.
++ The firmware was tested using [CLI Application](https://github.com/MMMRepos/cli-python.git), a headless CLI application written in Python.
 
